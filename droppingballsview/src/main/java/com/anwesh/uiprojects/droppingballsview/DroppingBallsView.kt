@@ -25,10 +25,10 @@ fun Float.maxScale(i : Int, n : Int)  : Float = Math.max(0f, this - i * n.invers
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.updateValue(dir : Float) : Float = dir * scGap / balls
 
-fun Canvas.drawBalls(size : Float, xGap : Float, h : Float, hDest : Float, scale : Float, paint : Paint) {
+fun Canvas.drawBalls(size : Float, hDest : Float, scale : Float, paint : Paint) {
     for (j in 0..(balls - 1)) {
         val scj : Float = scale.divideScale(j, balls)
-        drawCircle(j * xGap + size, h + (hDest - h) * scj, size, paint)
+        drawCircle(j * 2 * size + size, hDest * scj, size, paint)
     }
 }
 
@@ -37,11 +37,10 @@ fun Canvas.drawDBNode(i  : Int, scale : Float, paint : Paint) {
     val h : Float = height.toFloat()
     val gap : Float = (h / hFactor) / (nodes)
     val size : Float = gap / sizeFactor
-    val xGap : Float = w / (2 * size)
     val destH : Float = h - (i + 1) * gap
     paint.color = foreColor
     save()
-    drawBalls(size, xGap, h, destH, scale, paint)
+    drawBalls(size, destH, scale, paint)
     restore()
 }
 
@@ -206,7 +205,7 @@ class DroppingBallsView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : DroppingBallsView {
             val view : DroppingBallsView = DroppingBallsView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
