@@ -200,4 +200,13 @@ class DroppingBallsView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : DroppingBallsView {
+            val view : DroppingBallsView = DroppingBallsView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
