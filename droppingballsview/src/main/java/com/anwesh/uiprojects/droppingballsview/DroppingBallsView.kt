@@ -16,7 +16,6 @@ val nodes : Int = 5
 val balls : Int = 5
 val hFactor : Float = 3f
 val scGap : Float = 0.1f
-val strokeFactor : Int = 90
 val sizeFactor : Float = 2f
 val foreColor : Int = Color.parseColor("#3F51B5")
 val backColor : Int = Color.parseColor("#BDBDBD")
@@ -49,15 +48,16 @@ fun Canvas.drawDBNode(i  : Int, scale : Float, paint : Paint) {
 class DroppingBallsView(ctx : Context) : View(ctx) {
 
     private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val renderer : Renderer = Renderer(this)
 
     override fun onDraw(canvas : Canvas) {
-
+        renderer.render(canvas, paint)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-
+                renderer.handleTap()
             }
         }
         return true
