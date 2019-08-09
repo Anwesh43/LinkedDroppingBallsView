@@ -106,8 +106,53 @@ class DroppingBallsView(ctx : Context) : View(ctx) {
 
         fun stop() {
             if (animated) {
-                animated = false 
+                animated = false
             }
         }
+    }
+
+    data class DBNode(var i : Int, val state : State = State()) {
+
+        private var next : DBNode? = null
+        private var prev : DBNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawDBNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = DBNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            state.update {
+                cb(i, it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : DBNode {
+            var curr : DBNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+
     }
 }
