@@ -178,4 +178,26 @@ class DroppingBallsView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : DroppingBallsView) {
+
+        private val droppingBalls : DroppingBalls = DroppingBalls(0)
+        private val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            droppingBalls.draw(canvas, paint)
+            animator.animate {
+                droppingBalls.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            droppingBalls.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
